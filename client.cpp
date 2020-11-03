@@ -4,15 +4,8 @@
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
-#define _POSIX_SOURCE  1    /* POSIX comliant source (POSIX)*/
-#define BUFFSIZE       256
-#define FALSE          0
-#define TRUE           1
-
 int main(int argc, char *argv[]) {
     WSADATA wsaData;
-    SOCKET sock;
- 
     struct sockaddr_in server;
  
     char buf[32];
@@ -31,7 +24,7 @@ int main(int argc, char *argv[]) {
         return -1;
     }
 
-    sock = socket(AF_INET, SOCK_STREAM, 0);
+    SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
         perror("socket");
         return 1;
@@ -50,7 +43,7 @@ int main(int argc, char *argv[]) {
 
     //  (3)
     char vect[512]={0};
-    int get=recv(sock,vect,512,0);
+    int get=recv(sock, vect, 512, 0);
     printf("read=%s\n", vect);
  
     //  (4) Terminate 
