@@ -14,19 +14,18 @@ int main() {
     }
 
     //  (1) ソケットの作成
-    int sock0 = socket(AF_INET, SOCK_STREAM, 0);    //  socket(アドレスの種類, ソケットのタイプ, プロトコル)
+    int sock0 = socket(AF_INET, SOCK_STREAM, 0);    //  socket(アドレスの種類, ソケットのタイプ, プロトコル) -> ファイルディスクリプタ
     if (sock0 < 0) {
         perror("socket");
         std::cout << errno << std::endl;
         return 1;
     }
-    std::cout << "after scoket" << std::endl;
 
     //  (2) ソケットのバインド
     int portnumber = 50000;
     struct sockaddr_in addr;                        //  IPv4のソケットアドレスタイプの構造体
     addr.sin_family = AF_INET;                      //  アドレスの種類
-    addr.sin_port = htons(portnumber);              //  ポート番号
+    addr.sin_port = htons(portnumber);              //  ポート番の設定，htons()でネットワークバイトオーダーを解決
     addr.sin_addr.s_addr = INADDR_ANY;              //  アドレス
     if (bind(sock0, (struct sockaddr*)&addr, sizeof(addr)) != 0) {
         perror("bind");
@@ -51,13 +50,20 @@ int main() {
             break;
         }
 
-        //  (4-B)   クライアントにメッセージを送信
-        if (send(sock, "RDCS SERVER", 11, 0) < 1) {
+        //  (4-B)   クライアントからメッセージを受け取る
+        char vect[512] = { 0 };
+        int get = recv(sock, vect, 512, 0);
+        std::cout << "client:" << vect << std::endl;
+
+        //  (4-C)   クライアントにメッセージを送信
+        std::string msg;
+        std::cin >> msg;
+        if (send(sock, msg.c_str(), msg.size(), 0) < 1) {
             perror("write");
             break;
         }
 
-        //  (4-C)   ソケットを閉じて通信接続を終了する
+        //  (4-D)   ソケットを閉じて通信接続を終了する
         closesocket(sock);
     }
  

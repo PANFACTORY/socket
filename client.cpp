@@ -37,10 +37,18 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    //  (3) サーバーからメッセージを受け取る
+    //  (3-A) サーバーにメッセージを送信
+    std::string msg;
+    std::cin >> msg;
+    if (send(sock, msg.c_str(), msg.size(), 0) < 1) {
+        perror("write");
+        return 1;
+    }
+
+    //  (3-B) サーバーからメッセージを受け取る
     char vect[512] = { 0 };
     int get = recv(sock, vect, 512, 0);
-    std::cout << "read=" << vect << std::endl;
+    std::cout << "server:" << vect << std::endl;
  
     //  (4) 切断
     closesocket(sock);
