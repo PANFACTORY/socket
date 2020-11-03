@@ -12,21 +12,21 @@ int main(int argc, char *argv[]) {
     }
     std::string deststr(argv[1]);
  
-    //  (0-B) 初期化
+    //  (0-B) winsockの初期化
     WSADATA wsaData;
-    if (WSAStartup(MAKEWORD(2,0), &wsaData) == SOCKET_ERROR) {
+    if (WSAStartup(MAKEWORD(2, 0), &wsaData) == SOCKET_ERROR) {
         std::cout << "Error initialising WSA." << std::endl;
         return -1;
     }
 
     //  (1) ソケットの作成
-    SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
         perror("socket");
         return 1;
     }
 
-    //  (2) サーバーと接続
+    //  (2) サーバーに接続を要求
     struct sockaddr_in server;
     server.sin_family = AF_INET;
     server.sin_port = htons(50000);
@@ -43,6 +43,8 @@ int main(int argc, char *argv[]) {
  
     //  (4) 切断
     closesocket(sock);
+
+    //  (5) winsockの終了
     WSACleanup();
 
     return 0;
