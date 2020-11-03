@@ -4,16 +4,8 @@
 #include <ws2tcpip.h>
 #include <errno.h>
 
-#define _POSIX_SOURCE  1    /* POSIX comliant source (POSIX)*/
-#define BUFFSIZE       256
-#define FALSE          0
-#define TRUE           1
-
 int main() {
-    WSADATA wsaData;
-    SOCKET sock;
-    SOCKET sock0;
-    
+    WSADATA wsaData;    
     struct sockaddr_in addr;
     struct sockaddr_in client;
     
@@ -24,7 +16,7 @@ int main() {
     }
 
     //  (1) Open Socket
-    sock0 = socket(AF_INET, SOCK_STREAM, 0);
+    SOCKET sock0 = socket(AF_INET, SOCK_STREAM, 0);
     if (sock0 < 0) {
         perror("socket");
         printf("%d\n", errno);
@@ -51,7 +43,7 @@ int main() {
     //  (4) accept
     while (1) {
         int len = sizeof(client);
-        sock = accept(sock0, (struct sockaddr *)&client, &len);
+        SOCKET sock = accept(sock0, (struct sockaddr *)&client, &len);
         if (sock < 0) {
             perror("accept");
             break;
