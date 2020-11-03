@@ -23,9 +23,10 @@ int main() {
     std::cout << "after scoket" << std::endl;
 
     //  (2) ソケットのバインド
+    int portnumber = 50000;
     struct sockaddr_in addr;                        //  IPv4のソケットアドレスタイプの構造体
     addr.sin_family = AF_INET;                      //  アドレスの種類
-    addr.sin_port = htons(50000);                   //  ポート番号
+    addr.sin_port = htons(portnumber);              //  ポート番号
     addr.sin_addr.s_addr = INADDR_ANY;              //  アドレス
     if (bind(sock0, (struct sockaddr*)&addr, sizeof(addr)) != 0) {
         perror("bind");

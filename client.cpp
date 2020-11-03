@@ -5,12 +5,13 @@
 #include <ws2tcpip.h>
 
 int main(int argc, char *argv[]) {
-    //  (0-A) アドレス取得，コマンドライン引数に渡すこと 
-    if (argc != 2) {
+    //  (0-A) IPアドレスとポート番号の取得，コマンドライン引数に渡すこと 
+    if (argc != 3) {
         std::cout << "Usage : " << argv[0] << " dest" << std::endl;
         return 1;
     }
     std::string deststr(argv[1]);
+    int portnumber = atoi(argv[2]);
  
     //  (0-B) winsockの初期化
     WSADATA wsaData;
@@ -29,7 +30,7 @@ int main(int argc, char *argv[]) {
     //  (2) サーバーに接続を要求
     struct sockaddr_in server;
     server.sin_family = AF_INET;
-    server.sin_port = htons(50000);
+    server.sin_port = htons(portnumber);
     server.sin_addr.s_addr = inet_addr(deststr.c_str());
     if (connect(sock, (struct sockaddr*)&server, sizeof(server)) != 0) {
         perror("connect");
