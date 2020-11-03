@@ -1,4 +1,5 @@
-#include <stdio.h>
+//  Server side
+#include <iostream>
 #include <sys/types.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -11,7 +12,7 @@ int main() {
     
     //  (0) Initialize
     if (WSAStartup(MAKEWORD(2 ,0), &wsaData) == SOCKET_ERROR) {
-        printf ("Error initialising WSA.\n");
+        std::cout << "Error initialising WSA." << std::endl;
         return -1;
     }
 
@@ -19,10 +20,10 @@ int main() {
     SOCKET sock0 = socket(AF_INET, SOCK_STREAM, 0);
     if (sock0 < 0) {
         perror("socket");
-        printf("%d\n", errno);
+        std::cout << errno << std::endl;
         return 1;
     }
-    printf("after scoket\n");
+    std::cout << "after scoket" << std::endl;
 
     //  (2) bind
     addr.sin_family = AF_INET;
