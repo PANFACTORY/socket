@@ -5,13 +5,6 @@
 #include <ws2tcpip.h>
 #include <errno.h>
 
-#define HTTP_TCP_PORT 80
-#define CR 13
-#define LF 10
-
-void httpd(int sockfd);
-int send_msg(int fd, char *msg);
-
 int main() {
     //  (0) winsockの初期化
     WSADATA wsaData;
