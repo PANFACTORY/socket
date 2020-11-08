@@ -49,9 +49,9 @@ int main() {
             perror("accept");
             break;
         } else {
-			char vect[1024] = { 0 };
-			int get = recv(sock, vect, 1024, 0);
-			std::cout << "server:" << vect << std::endl;
+			char buf[1024] = { 0 };
+			int get = recv(sock, buf, 1024, 0);
+			std::cout << buf << std::endl;
 
 			std::string msg("HTTP/1.0 200 OK\r\ntext/html\r\n\r\nHello world");
 			if (send(sock, msg.c_str(), msg.size(), 0) < 1) {
