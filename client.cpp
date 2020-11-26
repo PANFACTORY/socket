@@ -1,4 +1,5 @@
 //  Client side
+//  Link option -lwsock32 -lws2_32
 #include <iostream>
 #include <sys/types.h>
 #include <winsock2.h>
