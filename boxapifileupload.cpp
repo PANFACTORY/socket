@@ -8,7 +8,7 @@
 #include <openssl/err.h>
 
 int main() {
-    std::string hostname = "api.github.com";
+    std::string hostname = "upload.box.com";
     std::string service = "https";
     
     //  (1) winsockの初期化
@@ -30,7 +30,7 @@ int main() {
         return 1;
     }
     addr.s_addr= ((struct sockaddr_in *)(res->ai_addr))->sin_addr.s_addr;
-    std::cout << "ip addres: " << inet_ntoa(addr) << std::endl;
+    //std::cout << "ip addres: " << inet_ntoa(addr) << std::endl;
     
     //  (3) ソケットの作成
     int sock = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
@@ -58,11 +58,37 @@ int main() {
 
     //  (6) サーバーにメッセージを送信
     char send_buf[256];
-    sprintf(send_buf, "GET /users/PANFACTORY HTTP/1.0\r\n");
+    sprintf(send_buf, "POST /api/2.0/files/content HTTP/1.0\r\n");
     SSL_write(ssl, send_buf, strlen(send_buf));
-    sprintf(send_buf, "Host: api.github.com\r\n");
+    sprintf(send_buf, "Host: upload.box.com\r\n");
     SSL_write(ssl, send_buf, strlen(send_buf));
-    sprintf(send_buf, "User-Agent:request\r\n");
+    sprintf(send_buf, "Authorization:Bearer <ACCESS TOKEN>\r\n");
+    SSL_write(ssl, send_buf, strlen(send_buf));
+    sprintf(send_buf, "content-length: 343\r\n");
+    SSL_write(ssl, send_buf, strlen(send_buf));
+    sprintf(send_buf, "content-type: multipart/form-data; boundary=------------------------9fd09388d840fef1\r\n");
+    SSL_write(ssl, send_buf, strlen(send_buf));
+    sprintf(send_buf, "\r\n");
+    SSL_write(ssl, send_buf, strlen(send_buf));
+    sprintf(send_buf, "--------------------------9fd09388d840fef1\r\n");
+    SSL_write(ssl, send_buf, strlen(send_buf));
+    sprintf(send_buf, "content-disposition: form-data; name=\"attributes\"\r\n");
+    SSL_write(ssl, send_buf, strlen(send_buf));
+    sprintf(send_buf, "\r\n");
+    SSL_write(ssl, send_buf, strlen(send_buf));
+    sprintf(send_buf, "{\"name\":\"test.txt\", \"parent\":{\"id\":\"0\"}}\r\n");
+    SSL_write(ssl, send_buf, strlen(send_buf));
+    sprintf(send_buf, "--------------------------9fd09388d840fef1\r\n");
+    SSL_write(ssl, send_buf, strlen(send_buf));
+    sprintf(send_buf, "content-disposition: form-data; name=\"file\"; filename=\"test.txt\"\r\n");
+    SSL_write(ssl, send_buf, strlen(send_buf));
+    sprintf(send_buf, "content-type: text/plain\r\n");
+    SSL_write(ssl, send_buf, strlen(send_buf));
+    sprintf(send_buf, "\r\n");
+    SSL_write(ssl, send_buf, strlen(send_buf));
+    sprintf(send_buf, "Test file text.\r\n");
+    SSL_write(ssl, send_buf, strlen(send_buf));
+    sprintf(send_buf, "--------------------------9fd09388d840fef1--\r\n");
     SSL_write(ssl, send_buf, strlen(send_buf));
     sprintf(send_buf, "\r\n");
     SSL_write(ssl, send_buf, strlen(send_buf));
