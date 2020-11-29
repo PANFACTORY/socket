@@ -64,6 +64,8 @@ int main() {
     SSL_write(ssl, send_buf, strlen(send_buf));
     sprintf(send_buf, "content-type: application/x-www-form-urlencoded\r\n");
     SSL_write(ssl, send_buf, strlen(send_buf));
+    sprintf(send_buf, "content-length: <content_length>\r\n");
+    SSL_write(ssl, send_buf, strlen(send_buf));
     sprintf(send_buf, "\r\n");
     SSL_write(ssl, send_buf, strlen(send_buf));
     sprintf(send_buf, "client_id=<client_id>&client_secret=<client_secret>&grant_type=client_credentials&box_subject_type=enterprise&box_subject_id=<enterprise_id>\r\n");
