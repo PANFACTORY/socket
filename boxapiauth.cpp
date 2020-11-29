@@ -66,15 +66,7 @@ int main() {
     SSL_write(ssl, send_buf, strlen(send_buf));
     sprintf(send_buf, "\r\n");
     SSL_write(ssl, send_buf, strlen(send_buf));
-    sprintf(send_buf, "client_id=<client_id>\r\n");
-    SSL_write(ssl, send_buf, strlen(send_buf));
-    sprintf(send_buf, "client_secret=<client_secret>\r\n");
-    SSL_write(ssl, send_buf, strlen(send_buf));
-    sprintf(send_buf, "grant_type=client_credentials");
-    SSL_write(ssl, send_buf, strlen(send_buf));
-    sprintf(send_buf, "box_subject_type=enterprise\r\n");
-    SSL_write(ssl, send_buf, strlen(send_buf));
-    sprintf(send_buf, "box_subject_id=<enterprise_id>\r\n");
+    sprintf(send_buf, "client_id=<client_id>&client_secret=<client_secret>&grant_type=client_credentials&box_subject_type=enterprise&box_subject_id=<enterprise_id>\r\n");
     SSL_write(ssl, send_buf, strlen(send_buf));
     sprintf(send_buf, "\r\n");
     SSL_write(ssl, send_buf, strlen(send_buf));
