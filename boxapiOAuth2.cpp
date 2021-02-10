@@ -195,11 +195,12 @@ int main() {
     SSL_write(ssl2, send_buf2, strlen(send_buf2));
     sprintf(send_buf2, "\r\n");
     SSL_write(ssl2, send_buf2, strlen(send_buf2));
-    sprintf(send_buf2, "grant_type=authorization_code&code=%s&client_id=%s&client_secret=%s\r\n", code.c_str(), clientid.c_str(), clientsecret.c_str());
+    std::string strencoded = "grant_type%3Dauthorization_code%26code%3D" + code + "%26client_id%3D" + clientid + "%26client_secret%3D" + clientsecret;
+    sprintf(send_buf2, "%s\r\n", strencoded.c_str());
     SSL_write(ssl2, send_buf2, strlen(send_buf2));
     sprintf(send_buf2, "\r\n");
     SSL_write(ssl2, send_buf2, strlen(send_buf2));
-
+    
     std::string retcontent;
     while (1){
         char rec_buf[256];
